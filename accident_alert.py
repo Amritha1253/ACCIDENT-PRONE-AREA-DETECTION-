@@ -1,82 +1,3 @@
-# import pandas as pd
-# import folium
-# from shapely.geometry import LineString, Point
-# import webbrowser
-# import os
-
-# # --------------------------
-# # 1. Load accident data (remove missing coords)
-# # --------------------------
-# accident_df = pd.read_csv("accident_data.csv")
-# accident_df = accident_df.dropna(subset=["Latitude", "Longitude"])
-
-# # --------------------------
-# # 2. Ask user for start & end coordinates
-# # --------------------------
-# print("Enter START location coordinates:")
-# start_lat = float(input("Latitude: "))
-# start_lon = float(input("Longitude: "))
-
-# print("\nEnter DESTINATION location coordinates:")
-# end_lat = float(input("Latitude: "))
-# end_lon = float(input("Longitude: "))
-
-# # Route = simple straight line with a few points
-# route_coords = [
-#     (start_lat, start_lon),
-#     ((start_lat + end_lat) / 2, (start_lon + end_lon) / 2),  # midpoint
-#     (end_lat, end_lon)
-# ]
-
-# # --------------------------
-# # 3. Convert route to shapely LineString
-# # --------------------------
-# route_line = LineString([(lon, lat) for lat, lon in route_coords])
-
-# # --------------------------
-# # 4. Filter accidents within 500 meters (~0.005 degrees)
-# # --------------------------
-# filtered_accidents = []
-# for _, row in accident_df.iterrows():
-#     accident_point = Point(row['Longitude'], row['Latitude'])
-#     if route_line.distance(accident_point) <= 0.005:
-#         filtered_accidents.append(row)
-
-# filtered_df = pd.DataFrame(filtered_accidents)
-
-# # --------------------------
-# # 5. Create map
-# # --------------------------
-# m = folium.Map(location=(start_lat, start_lon), zoom_start=14)
-
-# # Add route line
-# folium.PolyLine(route_coords, color="blue", weight=4, opacity=0.7, popup="Route").add_to(m)
-
-# # Start & end markers
-# folium.Marker((start_lat, start_lon), popup="Start", icon=folium.Icon(color='green')).add_to(m)
-# folium.Marker((end_lat, end_lon), popup="End", icon=folium.Icon(color='red')).add_to(m)
-
-# # Accident markers
-# for _, row in filtered_df.iterrows():
-#     folium.CircleMarker(
-#         location=(row['Latitude'], row['Longitude']),
-#         radius=5,
-#         color='orange',
-#         fill=True,
-#         fill_color='orange',
-#         popup=f"{row['Accident Prone Zone']}"
-#     ).add_to(m)
-
-# # --------------------------
-# # 6. Save & open map
-# # --------------------------
-# map_file = "accident_map_noapi.html"
-# m.save(map_file)
-# webbrowser.open('file://' + os.path.realpath(map_file))
-# print("✅ Map generated based on entered start and destination.")
-
-
-
 import pandas as pd
 import folium
 import osmnx as ox
@@ -174,4 +95,5 @@ m.save(map_file)
 webbrowser.open('file://' + os.path.realpath(map_file))
 
 print("✅ Map generated with road route and nearby accidents.")
+
 
